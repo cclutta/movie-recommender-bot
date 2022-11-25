@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Jukka Bot</title>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css'><link rel="stylesheet" href="{{ url_for('static', filename='styles/chat.css') }}">
+
+</head>
+<body>
+
+<div  class="chat-box">
+	<div class="chat-box-header">
+		 	<h3>Talk to Jukka</h3>
+			<p>
+				<i class="fa fa-times"></i>	
+			</p>
+	</div>
+	<div class="chat-box-body" id="chat-box-body">
+                <div class="chat-box-body-receive">
+			<p>I'm Jukka, your friendly movie bot. How can I help?</p>
+		</div>
+	</div>
+	<div class="chat-box-footer">
+			<button id="addExtra">
+				<i class="fa fa-plus"></i>	
+			</button>
+			<form onsubmit="return get_response()">
+			<input placeholder="Enter Your Message" type="text" id="user_message">
+			<!-- <i class="send far fa-paper-plane"></i> -->
+			</form>
+			
+	</div>
+</div>
+
+
+<div class="chat-button">
+	<span></span>
+</div>
+
+
+<div class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <h1>Add What you want here.</h1>
+        </div>
+    </div>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script><script  src="{{ url_for('static',filename='chat.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static',filename='index.js') }}"></script>
+</body>
+</html>
