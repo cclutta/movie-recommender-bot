@@ -2,6 +2,7 @@
 
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
+from classrecommender import Recommender
 
 
 movie_bot = ChatBot(
@@ -29,3 +30,9 @@ trainer.train(
     "What movie should I see?"
 ])
 
+if __name__ == "__main__":
+    recommender = Recommender()
+    
+    favorite_movie = input("Enter your fave movie: ")
+    no_of_recommendations = int(input("How many movies do you want to see: "))
+    recommender.get_recommendations(favorite_movie, no_of_recommendations)
