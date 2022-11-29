@@ -120,18 +120,19 @@ class Recommender:
             self.model, movie_user_mat_sparse, hashmap,
             movie, no_recommendations) 
         reverse_hashmap = {v: k for k, v in hashmap.items()}
-        
-        print('Recommendations for {}:'.format(movie))
+        list_m = []
+        # print('Recommendations for {}:'.format(movie))
         for i, (idx, dist) in enumerate(raw_recommendations):
-            print('{}: {} '.format(i+1, reverse_hashmap[idx]))
-                  
+            list_m.append('{}: {} '.format(i+1, reverse_hashmap[idx]))
+        return list_m
 
 if __name__ == "__main__":
     recommender = Recommender()
     
     favorite_movie = input("Enter your fave movie: ")
     no_of_recommendations = int(input("How many movies do you want to see: "))
-    recommender.get_recommendations(favorite_movie, no_of_recommendations)
+#     print(recommender.get_recommendations(favorite_movie, no_of_recommendations))
+    
 
 
         

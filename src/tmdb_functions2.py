@@ -3,9 +3,8 @@
 import json
 import asyncio
 import aiohttp
-
-tmdb_url = "https://api.themoviedb.org/3"
-api_key = "2e0d5485fe59596911c9670fc3d70f9a"
+import random
+from creds import *
 
 async def main(url, params):
     async with aiohttp.ClientSession() as session:
@@ -17,16 +16,16 @@ async def main(url, params):
 def top_rated_request(page_no):
     """ send request to get top-rated. """
     return asyncio.run(main(
-            tmdb_url+"/movie/top_rated", 
-            params={'api_key':api_key, 'page':page_no}
+            TMDB_URL+"/movie/top_rated", 
+            params={'api_key':API_KEY, 'page':page_no}
             ))
 
 def get_all_movie_genres_request():
     """ Get official movie genre list. """
     
     return asyncio.run(main(
-        tmdb_url+"/genre/movie/list",
-        params={'api_key':api_key}     
+        TMDB_URL+"/genre/movie/list",
+        params={'api_key':API_KEY}     
     ))
 
 def get_top_rated_titles(page_no):
@@ -53,33 +52,42 @@ def get_now_playing():
     """Get movies playing now in the region. """
     
     now_playing = asyncio.run(main(
-        tmdb_url+"/movie/now_playing",
-        params={'api_key':api_key, 'page':1}     
+        TMDB_URL+"/movie/now_playing",
+        params={'api_key':API_KEY, 'page':1}     
     ))
     
     now_playing_titles = []
+    response = "Movies now showing are: \n"
+    i = 1
     
     for result in now_playing.get("results"):
         if result.get("original_language") == "en":
-            now_playing_titles.append(result.get("original_title"))
-    return now_playing_titles
+            response += "{}. {}, \n ".format(i, result.get("original_title"))
+            i +=1
+    return response
 
 def get_upcoming():
     """Get upcoming movies in the region. """
     
     upcoming = asyncio.run(main(
-        tmdb_url+"/movie/now_playing",
-        params={'api_key':api_key, 'page':1}     
+        TMDB_URL+"/movie/now_playing",
+        params={'api_key':API_KEY, 'page':1}     
     ))
     
-    upcoming_titles = []
-    
+    response = "Upcoming movies are: \n"
+    i = 1
     for result in upcoming.get("results"):
         if result.get("original_language") == "en":
-            upcoming_titles.append(result.get("original_title"))
-    return upcoming_titles
+            response += "{}. {}, \n ".format(i, result.get("original_title"))
+            i +=1
+    return response
     
-
+def get_random_genre():
+    """ Get random genre name from list. """
+    genres = []
+    for result in get_all_movie_genres_request().get("genres"):
+        genres.append(result.get("name"))
+    return random.choice(genres)
   
 
 def get_top5_based_genre(genre):
@@ -101,12 +109,14 @@ def get_top5_based_genre(genre):
     for result in get_all_movie_genres_request().get("genres"):
         if result.get("name").lower() == genre.lower():
             genre_id = result.get("id")
-    
+
+    response = "Top rated movies with genre {}: \n".format(genre)
+    i = 1
     for key in top_rated_genre_titles:
         if genre_id in top_rated_genre_titles[key]:
-            top5_based_genre.append(key)
-    
-    return top5_based_genre
+            response += "{}. {}, \n ".format(i, key)
+            i +=1    
+    return response
         
     
     
@@ -114,11 +124,12 @@ def get_top5_based_genre(genre):
         
 if __name__ == "__main__":
     """ Main Function """
-    get_top5_based_genre("Fantasy")
+    print(get_top5_based_genre(get_random_genre()))
     # print(movies)
     # print(asyncio.run(main(tmdb_url+"/movie/top_rated", params={'api_key':api_key, 'page':1})))
-    # print(get_upcoming())
+    print(get_upcoming())
     # print(get_all_movie_genres_request())
+    print(TMDB_URL)
     """
     genres = get_all_movie_genres_request()
     for result in genres.get("genres"):

@@ -1,9 +1,15 @@
 #!/usr/bin/python3
 
-from chatterbot import ChatBot
+from chatterbot import *
+from chatterbot.conversation import Statement
 from chatterbot.trainers import ListTrainer
-from classrecommender import Recommender
+import sys
+import os
 
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
+from creds import *
 
 movie_bot = ChatBot(
     'Jukka',
@@ -12,10 +18,23 @@ movie_bot = ChatBot(
         {
             'import_path': 'chatterbot.logic.BestMatch',
             'default_response': 'I am sorry, but I do not understand.',
-            'maximum_similarity_threshold': 0.90
+            'maximum_similarity_threshold': 0.90,
+        },
+        {
+            'import_path': 'chatbot.recommender_adapter.RecommenderAdapter'
+        },
+        {
+            'import_path': 'chatbot.tmdb_upcomingadapter.TMDBUpcomingSourceAdapter'
+        },
+        {
+            'import_path': 'chatbot.tmdb_nowplayingadapter.TMDBNowPlayingSourceAdapter'
+        },
+        {
+            'import_path': 'chatbot.tmdb_ratedgenreadapter.TMDBRatedGenreAdapter'
         }
+        
     ],
-    database_uri='mysql://root:root@localhost:3306/testbot'
+    database_uri=DATABASE_URI
 
 )
 trainer = ListTrainer(movie_bot)
@@ -26,13 +45,12 @@ trainer.train(
     "I am good.",
     "That is good to hear.",
     "Thank you",
-    "You are welcome.",
-    "What movie should I see?"
+    "You are welcome."
 ])
 
-if __name__ == "__main__":
-    recommender = Recommender()
-    
-    favorite_movie = input("Enter your fave movie: ")
-    no_of_recommendations = int(input("How many movies do you want to see: "))
-    recommender.get_recommendations(favorite_movie, no_of_recommendations)
+trainer.train(
+    [
+    "What movie should I see?",
+    "What's your favorite movie?"
+    ])
+

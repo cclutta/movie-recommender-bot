@@ -21,18 +21,4 @@ def test_add_rating():
     add_rating(user_id, movie_id, rating)
     
 
-def test_bot():
-    while True:
-        try:
-            bot_input = movie_bot.get_response(input())
-            print(bot_input)
 
-        except(KeyboardInterrupt, EOFError, SystemExit):
-            break
-            
-if __name__ == "__main__":
-    """ Main Function """
-    # test_add_rating()
-    # print(get_movieId_from_title(read_fave_movie()))
-    test_bot()
-    
