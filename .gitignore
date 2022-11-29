@@ -2,3 +2,4 @@ __pycache__/
 chatconfigstatements.txt
 test_db.py
 tmdb_functions.py
+creds.py
