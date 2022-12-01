@@ -1,2 +1,3 @@
 aiohttp
 chatterbot
+pyyaml==5.4
